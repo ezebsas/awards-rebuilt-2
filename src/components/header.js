@@ -11,7 +11,7 @@ import {
     useGlobalDispatchContext
 } from '../context/globalContext'
 
-const Header = () => {
+const Header = ({onCursor}) => {
     const dispatch = useGlobalDispatchContext()
     const { currentTheme } = useGlobalStateContext()
 
@@ -37,9 +37,16 @@ const Header = () => {
             <Container>
                 {console.log(currentTheme)}
                 <Flex spaceBetween noHeight>
-                    <Logo>
+                    <Logo
+                        onMouseEnter={() => onCursor('hovered')}
+                        onMouseLeave={onCursor}
+                    >
                         <Link to='/'>FURR</Link>
-                        <span onClick={toggleTheme}></span>
+                        <span 
+                            onClick={toggleTheme}
+                            onMouseEnter={() => onCursor('pointer')}
+                            onMouseLeave={onCursor}
+                        ></span>
                         <Link to='/'>W</Link>
                     </Logo>
                     <Menu>
