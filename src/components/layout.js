@@ -1,6 +1,5 @@
-import React, { useState } from "react"
+import React from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
 
 //styled components
 import { createGlobalStyle, ThemeProvider} from "styled-components"
@@ -9,6 +8,7 @@ import {normalize} from "styled-normalize"
 //Components
 import Header from "./header"
 import Cursor from "./customCursor"
+import Navigation from './navigation'
 
 //Context
 import { useGlobalStateContext, useGlobalDispatchContext } from '../context/globalContext'
@@ -38,16 +38,6 @@ const GlobalStyle = createGlobalStyle`
 `
 
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
-
   const darkTheme = {
     background: "#000",
     text: "#fff",
@@ -73,6 +63,7 @@ const Layout = ({ children }) => {
       <GlobalStyle />
       <Cursor />
       <Header onCursor={onCursor} />
+      <Navigation />
       <main>{children}</main>
     </ThemeProvider>
   )
