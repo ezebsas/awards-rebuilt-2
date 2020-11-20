@@ -9,6 +9,7 @@ import {normalize} from "styled-normalize"
 import Header from "./header"
 import Cursor from "./customCursor"
 import Navigation from './navigation'
+import Footer from './footer'
 
 //Context
 import { useGlobalStateContext, useGlobalDispatchContext } from '../context/globalContext'
@@ -38,16 +39,25 @@ const GlobalStyle = createGlobalStyle`
 `
 
 const Layout = ({ children }) => {
+  const [hamburgerPosition, setHamburgerPosition] = useState({
+    x: 0,
+    y: 0
+  })
+
   const darkTheme = {
     background: "#000",
     text: "#fff",
     red: '#ea291e',
+    left: `${hamburgerPosition.x}px`,
+    top: `${hamburgerPosition.y}px`,
   }
 
   const lightTheme = {
     background: "#fff",
     text: "#000",
     red: '#ea291e',
+    left: `${hamburgerPosition.x}px`,
+    top: `${hamburgerPosition.y}px`,
   }
 
   const { currentTheme, cursorStyles } = useGlobalStateContext()
@@ -67,9 +77,12 @@ const Layout = ({ children }) => {
       <Header 
         onCursor={onCursor} 
         setToggleMenu={setToggleMenu}
+        hamburgerPosition={hamburgerPosition}
+        setHamburgerPosition={setHamburgerPosition}
        />
       <Navigation toggleMenu={toggleMenu} setToggleMenu={setToggleMenu} onCursor={onCursor} />
       <main>{children}</main>
+      <Footer onCursor={onCursor} />
     </ThemeProvider>
   )
 }

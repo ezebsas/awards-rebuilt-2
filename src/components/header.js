@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Link } from 'gatsby'
 
 //styled components
@@ -11,9 +11,14 @@ import {
     useGlobalDispatchContext
 } from '../context/globalContext'
 
-const Header = ({onCursor, setToggleMenu}) => {
+//hooks
+import useElementPosition from '../hooks/useElementPosition'
+
+const Header = ({onCursor, setToggleMenu, hamburgerPosition, setHamburgerPosition}) => {
     const dispatch = useGlobalDispatchContext()
     const { currentTheme } = useGlobalStateContext()
+    const hamburger = useRef(null)
+    const position = useElementPosition(hamburger)
 
     const toggleTheme = () => {
         if(currentTheme === 'dark'){
@@ -22,6 +27,11 @@ const Header = ({onCursor, setToggleMenu}) => {
             dispatch({ type: 'TOGGLE_THEME', theme: 'dark'})
         }
 
+    }
+
+    const menuHover = () => {
+        onCursor('locked')
+        setHamburgerPosition({x: position.x, y: position.y + 72})
     }
 
     useEffect(() => {
@@ -35,7 +45,6 @@ const Header = ({onCursor, setToggleMenu}) => {
         transition={{duration:1, ease: [0.6, 0.05, -0.01, 0.9]}}
         >
             <Container>
-                {console.log(currentTheme)}
                 <Flex spaceBetween noHeight>
                     <Logo
                         onMouseEnter={() => onCursor('hovered')}
@@ -49,7 +58,7 @@ const Header = ({onCursor, setToggleMenu}) => {
                         ></span>
                         <Link to='/'>W</Link>
                     </Logo>
-                    <Menu onClick={() => setToggleMenu(true)}>
+                    <Menu ref={hamburger} onClick={() => setToggleMenu(true)} onMouseEnter={menuHover} onMouseLeave={onCursor}>
                         <button>
                             <span></span>
                             <span></span>
